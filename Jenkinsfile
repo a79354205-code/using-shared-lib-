@@ -1,10 +1,29 @@
-// Load the shared library configured in Jenkins (Manage Jenkins -> System -> Global Pipeline Libraries)
-// Replace 'shared-lib' with the library name you configured in Jenkins, or use @Library('shared-lib@main') _
+// =================================================================================
+// Method 1: Global Pipeline Library (Recommended if configured in Jenkins)
+// Make sure 'shared-lib' is added in:
+// Manage Jenkins -> System -> Global Pipeline Libraries
+// =================================================================================
 @Library('shared-lib') _
 
-// vars/vpc.groovy in a79354205-code/shared-lib defines the entire pipeline.
-// Default VPC name is 'my-vpc'
+// Calls vars/vpc.groovy from https://github.com/a79354205-code/shared-lib
+// It executes:
+//   1. Stage 'Checkout' (checks out this repository from SCM)
+//   2. Stage 'VPC' (provisions/echoes VPC creation)
 vpc()
 
-// To specify a custom VPC name, you can pass it as a parameter:
-// vpc('production-vpc')
+// ---------------------------------------------------------------------------------
+// Alternative Usages:
+//
+// 1. Pass a custom VPC name:
+//    vpc('prod-vpc')
+//    or: vpc(name: 'prod-vpc')
+//
+// 2. Dynamic loading without configuring Jenkins Global Pipeline Libraries:
+//    /*
+//    library identifier: 'shared-lib@main', retriever: modernSCM(
+//        [$class: 'GitSCMSource',
+//         remote: 'https://github.com/a79354205-code/shared-lib.git']
+//    )
+//    vpc()
+//    */
+// =================================================================================
